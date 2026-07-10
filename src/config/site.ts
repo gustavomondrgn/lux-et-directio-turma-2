@@ -22,6 +22,18 @@ export interface Lote {
   /** Preço à vista, em reais. */
   preco: number;
   /**
+   * Valor da PARCELA mensal (12x), em reais.
+   *
+   * ⚠️ NÃO é `preco / 12`. O lote 1 custa R$1.200 à vista e parcela em
+   * 12x de R$120 — quem parcela paga mais. Por isso o valor é explícito, e
+   * nunca calculado: uma divisão simples exibiria R$100 e prometeria um preço
+   * que o checkout não pratica.
+   *
+   * `null` = a parcela deste lote ainda não foi definida. Nesse caso o lote,
+   * mesmo vigente, exibe só o valor à vista — em vez de inventar um número.
+   */
+  parcela: number | null;
+  /**
    * Link de WhatsApp deste lote (wa.me com mensagem pré-preenchida).
    * NÃO é checkout: o lead cai na conversa e a venda é fechada na mão.
    * A mensagem já identifica de qual lote a pessoa veio.
@@ -45,6 +57,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-09T00:00:00-03:00',
     fim: '2026-07-10T00:00:00-03:00', // vale até 09/07 23:59:59
     preco: 1200,
+    parcela: 120,
     checkout: msgLote('01'),
   },
   {
@@ -53,6 +66,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-10T00:00:00-03:00',
     fim: '2026-07-11T00:00:00-03:00', // vale até 10/07 23:59:59
     preco: 1500,
+    parcela: null, // PENDENTE: valor da parcela do lote 2 (o lote 1 é 12x R$120)
     checkout: msgLote('02'),
   },
   {
@@ -61,15 +75,19 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-11T00:00:00-03:00',
     fim: '2026-07-12T00:00:00-03:00', // vale até 11/07 23:59:59
     preco: 2000,
+    parcela: null, // PENDENTE: valor da parcela do lote 3
     checkout: msgLote('03'),
   },
 ] as const;
 
-/** Nº de parcelas exibidas. Divisão simples — NUNCA mencionar juros. */
+/** Nº de parcelas exibidas. NUNCA mencionar juros — só o valor da parcela. */
 export const PARCELAS = 12;
 
-/** Ancoragem verdadeira: o preço do formato individual. */
-export const PRECO_INDIVIDUAL = 3000;
+/** Âncora máxima: quanto custa a mentoria no formato individual. */
+export const PRECO_INDIVIDUAL = 5500;
+
+/** Preço "cheio" do formato em grupo — a segunda âncora, antes dos lotes. */
+export const PRECO_GRUPO = 3000;
 
 /**
  * Modo de teste da virada de lote. Preencha com um ISO pra "congelar" o relógio
@@ -139,32 +157,41 @@ export const GRADE: { etapa: string; n: number; encontros: readonly string[] }[]
 export const TOTAL_ENCONTROS = GRADE.reduce((s, e) => s + e.n, 0); // 17
 
 /* -------------------------------------------------------------------------
-   BÔNUS — 7 slots. O Gustavo confirma/corta com o Yuri.
-   `ativo: false` some da página sem apagar o registro.
+   BÔNUS — lista final (6). `ativo: false` some da página sem apagar o registro.
+   `formato` vira uma etiqueta discreta (aço, não dourado — não compete com a
+   oferta). O Placidus é o clímax: `destaque` + `badge` dourado.
    ------------------------------------------------------------------------- */
 export const BONUS: {
   titulo: string;
   desc: string;
   ativo: boolean;
+  /** Etiqueta fria (ex.: "aula gravada"). */
+  formato?: string;
   destaque?: boolean;
+  /** Badge dourado — só no bônus de destaque. */
+  badge?: string;
 }[] = [
-  { titulo: 'Técnica de Revolução Solar', desc: 'PENDENTE: descrição', ativo: true },
-  { titulo: 'Técnica de Revolução Lunar', desc: 'PENDENTE: descrição', ativo: true },
-  { titulo: 'Sinastria', desc: 'PENDENTE: descrição', ativo: true },
-  { titulo: 'Como Identificar e Curar Vícios', desc: 'PENDENTE: descrição', ativo: true },
-  { titulo: 'Viver de Astrologia', desc: 'Aula com o Gustavo. PENDENTE: descrição', ativo: true },
+  { titulo: 'Técnica de Revolução Solar', desc: '', ativo: true, formato: 'aula gravada' },
+  { titulo: 'Técnica de Revolução Lunar', desc: '', ativo: true, formato: 'aula gravada' },
+  { titulo: 'Sinastria', desc: '', ativo: true, formato: 'aula gravada' },
+  { titulo: 'Como Identificar e Curar Vícios', desc: '', ativo: true, formato: 'aula gravada' },
   {
-    titulo: 'Livro: Igreja Católica e Astrologia Tradicional',
-    desc: 'O livro do Yuri — o que a Igreja realmente ensina sobre a arte. PENDENTE: descrição',
+    titulo: 'Viver de Astrologia',
+    desc: 'Com o Gustavo.',
     ativo: true,
+    formato: 'aula gravada',
   },
   {
     titulo: 'Acesso prioritário ao Placidus',
-    desc: 'O site de astrologia do Yuri. Você entra numa rodada privada, antes do público. PENDENTE: descrição',
+    desc: 'O site de astrologia do Yuri. Você entra antes do público.',
     ativo: true,
     destaque: true,
+    badge: 'Acesso antecipado · antes do público',
   },
 ];
+
+/** Linha discreta no rodapé do bloco de bônus. */
+export const BONUS_RODAPE = 'Acesso imediato e vitalício aos bônus gravados';
 
 /* -------------------------------------------------------------------------
    GARANTIA — redutor de risco. [opcional — Gustavo decide]
@@ -199,23 +226,23 @@ export const DEPOIMENTOS: { nome: string; texto: string }[] = [];
 export const FAQ: { p: string; r: string }[] = [
   {
     p: 'Sou iniciante total. Consigo acompanhar?',
-    r: 'PENDENTE: resposta. (Estrutura: sim — a formação começa do zero, na Formação Inicial, e a ordem foi validada pela 1ª turma.)',
+    r: 'Sim — a formação começa do zero, na Formação Inicial, e a ordem foi validada pela 1ª turma. Você sai dominando completamente a técnica horária e natal.',
   },
   {
     p: 'Não posso assistir ao vivo. E agora?',
-    r: 'PENDENTE: resposta. (Confirmar: os encontros ficam gravados? por quanto tempo? o exercício pode ser entregue depois?)',
+    r: 'Ficará gravado na plataforma de forma vitalícia. Os exercícios podem ser enviados para o Yuri ou no grupo.',
   },
   {
     p: 'Quanto tempo por semana eu preciso dedicar?',
-    r: 'PENDENTE: resposta. (Encontro + exercício da semana.)',
+    r: 'O ideal seria participar do encontro semanal + fazer os exercícios.',
   },
   {
     p: 'Como funciona o parcelamento?',
-    r: 'PENDENTE: resposta. (A venda é fechada no WhatsApp — confirmar formas de pagamento e em quantas vezes.)',
+    r: 'O pagamento será feito pela InfinitePay e é possível parcelar em até 12x pelo cartão de crédito.',
   },
   {
     p: 'Quando começa a turma?',
-    r: 'PENDENTE: data de início da turma 2.',
+    r: 'Será comunicado no grupo, após o encerramento da oferta na sexta.',
   },
 ];
 

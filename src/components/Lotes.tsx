@@ -3,8 +3,8 @@
 import Emblema from '@/components/fx/Emblema';
 import { cn } from '@/lib/cn';
 import { useRelogio } from '@/hooks/useRelogio';
-import { brl, estadoEm, exibeParcelado, parcela, parcelado, ultimoDiaLabel, type StatusLote } from '@/lib/lotes';
-import { isLinkReady, LINKS, PARCELAS, PRECO_INDIVIDUAL, type Lote } from '@/config/site';
+import { brl, estadoEm, exibeParcelado, parcelado, ultimoDiaLabel, type StatusLote } from '@/lib/lotes';
+import { isLinkReady, LINKS, PARCELAS, PRECO_GRUPO, PRECO_INDIVIDUAL, type Lote } from '@/config/site';
 import CtaButton from './CtaButton';
 
 /* ------------------------------------------------------------------ CARD -- */
@@ -43,7 +43,7 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
           A REGRA: só o lote VIGENTE mostra o parcelado em destaque.
           Encerrado e futuro mostram o valor cheio, à vista.
           --------------------------------------------------------------------- */}
-      {exibeParcelado(status) ? (
+      {exibeParcelado(status, lote) ? (
         <>
           <p className="mt-7 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-muted">
             {PARCELAS}x de
@@ -54,7 +54,7 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
               className="text-gold-grad font-[family-name:var(--font-serif)] font-medium leading-none"
               style={{ fontSize: 'clamp(56px,9vw,76px)' }}
             >
-              {brl(parcela(lote.preco))}
+              {brl(lote.parcela!)}
             </span>
           </div>
           <p className="mt-3 text-sm text-muted">ou R${brl(lote.preco)} à vista</p>
@@ -165,9 +165,13 @@ export function PrecoVigente({ buildNow }: { buildNow: number }) {
       className="plate ticks inline-flex flex-col items-center gap-0.5 px-8 py-[clamp(10px,1.8vh,20px)] sm:px-11"
       suppressHydrationWarning
     >
-      <span className="flex items-baseline gap-3">
-        <span className="text-sm text-muted line-through decoration-goldenrod/70 sm:text-base">
+      {/* Ancoragem dupla: individual → grupo → o preço de hoje */}
+      <span className="flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-0.5">
+        <span className="text-sm text-muted-3 line-through decoration-goldenrod/60 sm:text-[0.95rem]">
           R${brl(PRECO_INDIVIDUAL)}
+        </span>
+        <span className="text-sm text-muted line-through decoration-goldenrod/70 sm:text-base">
+          R${brl(PRECO_GRUPO)}
         </span>
         <span className="font-[family-name:var(--font-mono)] text-[0.6rem] uppercase tracking-[0.24em] text-muted-3">
           hoje
@@ -177,7 +181,7 @@ export function PrecoVigente({ buildNow }: { buildNow: number }) {
         className="text-gold-grad font-[family-name:var(--font-serif)] font-medium leading-tight"
         style={{ fontSize: 'min(clamp(26px,3.8vw,38px), 4.4vh)' }}
       >
-        {parcelado(vigente.preco)}
+        {parcelado(vigente) ?? `R$${brl(vigente.preco)}`}
       </span>
     </div>
   );
@@ -204,7 +208,7 @@ export function CtaVigente({
       href={linkPronto ? vigente.checkout : '#'}
       newTab={linkPronto}
       big={big}
-      sub={parcelado(vigente.preco)}
+      sub={parcelado(vigente) ?? `R$${brl(vigente.preco)} à vista`}
       className={cn(!linkPronto && 'pointer-events-none opacity-50')}
     >
       {label}

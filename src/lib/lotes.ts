@@ -68,23 +68,20 @@ export function estadoEm(now: number): EstadoLotes {
   return { fase: 'aberto', vigente, proximoMarco: ms(vigente.fim), lotes };
 }
 
-/**
- * Valor da parcela. Divisão simples por 12, arredondada PRA BAIXO — nunca
- * anunciar uma parcela maior do que a conta dá. Sem menção a juros.
- * 1200 → 100 · 1500 → 125 · 2000 → 166
- */
-export function parcela(preco: number): number {
-  return Math.floor(preco / PARCELAS);
-}
-
 /** 1200 → "1.200" (padrão pt-BR, sem centavos). */
 export function brl(n: number): string {
   return n.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
 }
 
-/** "12x de R$100" */
-export function parcelado(preco: number): string {
-  return `${PARCELAS}x de R$${brl(parcela(preco))}`;
+/**
+ * "12x de R$120" — ou `null` se a parcela do lote ainda não foi definida.
+ *
+ * O valor vem do config, NUNCA de `preco / 12`. O parcelado é no cartão e
+ * embute juros: o lote 1 é R$1.200 à vista e 12x de R$120. Calcular daria
+ * R$100 e a página prometeria um preço que o checkout não pratica.
+ */
+export function parcelado(lote: Lote): string | null {
+  return lote.parcela == null ? null : `${PARCELAS}x de R$${brl(lote.parcela)}`;
 }
 
 /* --------------------------------------------------------------------------
@@ -92,9 +89,12 @@ export function parcelado(preco: number): string {
    SOMENTE o lote vigente exibe o parcelado em destaque. Todos os outros
    exibem o valor cheio, à vista. Um único ponto de decisão, usado por toda a
    página, pra não haver duas fontes de verdade.
+
+   Se o lote vigente ainda não tem parcela definida, ele também cai no valor
+   cheio — melhor exibir só o à vista do que inventar uma parcela.
    -------------------------------------------------------------------------- */
-export function exibeParcelado(status: StatusLote): boolean {
-  return status === 'vigente';
+export function exibeParcelado(status: StatusLote, lote: Lote): boolean {
+  return status === 'vigente' && lote.parcela != null;
 }
 
 /** Tempo restante até `alvo`, quebrado em unidades. */

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ANCORA_OFERTA, PARCELAS } from '@/config/site';
 import { useRelogio } from '@/hooks/useRelogio';
-import { brl, estadoEm, parcela } from '@/lib/lotes';
+import { brl, estadoEm } from '@/lib/lotes';
 
 /**
  * Barra de conversão fixa no rodapé. Aparece depois do Hero e some quando a
@@ -50,9 +50,11 @@ export default function StickyCta({ buildNow }: { buildNow: number }) {
     >
       <div className="wrap flex items-center justify-between gap-4 py-3">
         <div className="leading-tight">
-          <span className="eyebrow block text-[0.6rem]">{PARCELAS}x de</span>
+          <span className="eyebrow block text-[0.6rem]">
+            {vigente.parcela != null ? `${PARCELAS}x de` : 'à vista'}
+          </span>
           <span className="text-gold-grad text-2xl font-extrabold">
-            R${brl(parcela(vigente.preco))}
+            R${brl(vigente.parcela ?? vigente.preco)}
           </span>
         </div>
         <a

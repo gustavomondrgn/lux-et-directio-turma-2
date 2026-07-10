@@ -2,7 +2,7 @@ import { CountdownBig } from '@/components/Countdown';
 import Lotes from '@/components/Lotes';
 import Reveal from '@/components/Reveal';
 import { brl } from '@/lib/lotes';
-import { GARANTIA_ATIVA, GARANTIA_DIAS, PRECO_INDIVIDUAL } from '@/config/site';
+import { GARANTIA_ATIVA, GARANTIA_DIAS, PRECO_GRUPO, PRECO_INDIVIDUAL } from '@/config/site';
 
 /**
  * BLOCO 9 — OFERTA + URGÊNCIA.
@@ -37,8 +37,9 @@ export default function Oferta({ buildNow }: { buildNow: number }) {
 
           <Reveal delay={140}>
             <p className="mx-auto mt-6 max-w-[52ch] text-[17px] leading-relaxed text-muted">
-              O formato em grupo é o que permite esse preço. Ele sobe a cada dia, em três lotes —
-              e depois do terceiro, a mentoria volta a existir só no individual.
+              Em grupo, ela custa R${brl(PRECO_GRUPO)}. O formato é o que permite esse preço — e
+              ele sobe a cada dia, em três lotes. Depois do terceiro, a mentoria volta a existir
+              só no individual.
             </p>
           </Reveal>
         </div>
