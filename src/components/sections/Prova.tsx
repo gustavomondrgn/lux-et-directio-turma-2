@@ -3,11 +3,8 @@ import { DEPOIMENTOS, TOTAL_ENCONTROS, TURMA_1_ALUNOS } from '@/config/site';
 
 /**
  * BLOCO 7 — PROVA.
- * Enquanto os depoimentos da 1ª turma não chegam, a prova é factual: a turma
- * existe, está em andamento e a ordem pedagógica foi validada nela.
- *
- * O aviso de PENDENTE só aparece em `npm run dev` — a página publicada nunca
- * mostra placeholder pro visitante.
+ * Números gravados em serif (placas), depoimentos como excertos de fólio.
+ * O aviso de PENDENTE só existe em `npm run dev` — nunca na página publicada.
  */
 const MOSTRAR_PENDENCIAS = process.env.NODE_ENV !== 'production';
 
@@ -28,23 +25,26 @@ export default function Prova() {
             <span className="eyebrow">A prova</span>
           </Reveal>
           <Reveal delay={80}>
-            <h2 className="mt-6 text-balance" style={{ fontSize: 'clamp(28px,4.4vw,44px)' }}>
+            <h2
+              className="mt-6 text-balance"
+              style={{ fontSize: 'clamp(29px,4.6vw,48px)', fontWeight: 500 }}
+            >
               A primeira turma <span className="italic text-gold-grad">já está de pé.</span>
             </h2>
           </Reveal>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-[var(--container-editorial)] grid-cols-3 gap-4">
+        <div className="mx-auto mt-14 grid max-w-[var(--container-editorial)] grid-cols-3 gap-3 sm:gap-5">
           {NUMEROS.map((n, i) => (
             <Reveal key={n.rotulo} delay={120 + i * 80}>
-              <div className="rounded-2xl border border-line bg-surface-2 px-3 py-7 text-center">
+              <div className="plate px-2 py-8 text-center sm:py-10">
                 <span
-                  className="text-gold-grad block font-[family-name:var(--font-mono)] font-semibold leading-none"
-                  style={{ fontSize: 'clamp(30px,5vw,48px)' }}
+                  className="text-gold-grad block font-[family-name:var(--font-serif)] font-medium leading-none"
+                  style={{ fontSize: 'clamp(34px,5.4vw,56px)' }}
                 >
                   {n.valor}
                 </span>
-                <span className="eyebrow mt-3 block text-[0.56rem] sm:text-[0.64rem]">
+                <span className="eyebrow mt-3.5 block text-[0.52rem] sm:text-[0.62rem]">
                   {n.rotulo}
                 </span>
               </div>
@@ -56,11 +56,17 @@ export default function Prova() {
           <div className="mx-auto mt-12 grid max-w-[var(--container-content)] gap-5 sm:grid-cols-2">
             {DEPOIMENTOS.map((d, i) => (
               <Reveal key={d.nome} delay={140 + i * 80}>
-                <figure className="h-full rounded-2xl border border-line bg-surface-2 p-7">
-                  <blockquote className="font-[family-name:var(--font-serif)] text-lg italic leading-relaxed text-clinical">
-                    “{d.texto}”
+                <figure className="plate h-full p-7 sm:p-8">
+                  <span
+                    aria-hidden
+                    className="block font-[family-name:var(--font-serif)] text-5xl leading-none text-goldenrod/40"
+                  >
+                    “
+                  </span>
+                  <blockquote className="mt-2 font-[family-name:var(--font-serif)] text-lg italic leading-relaxed text-clinical">
+                    {d.texto}
                   </blockquote>
-                  <figcaption className="eyebrow mt-5">{d.nome}</figcaption>
+                  <figcaption className="eyebrow mt-6">— {d.nome}</figcaption>
                 </figure>
               </Reveal>
             ))}

@@ -26,7 +26,10 @@ export default function Oferta({ buildNow }: { buildNow: number }) {
           </Reveal>
 
           <Reveal delay={80}>
-            <h2 className="mt-6 text-balance" style={{ fontSize: 'clamp(28px,4.6vw,46px)' }}>
+            <h2
+              className="mt-6 text-balance"
+              style={{ fontSize: 'clamp(29px,4.8vw,50px)', fontWeight: 500 }}
+            >
               Individualmente, essa mentoria custa R${brl(PRECO_INDIVIDUAL)} —{' '}
               <span className="italic text-gold-grad">é o preço real, hoje.</span>
             </h2>
@@ -54,7 +57,7 @@ export default function Oferta({ buildNow }: { buildNow: number }) {
 
         {GARANTIA_ATIVA && (
           <Reveal delay={320}>
-            <div className="mx-auto mt-12 flex max-w-[52ch] items-start gap-4 rounded-2xl border border-line bg-surface-2 p-6">
+            <div className="plate mx-auto mt-14 flex max-w-[54ch] items-start gap-4 p-6 sm:p-7">
               <svg
                 aria-hidden
                 viewBox="0 0 24 24"
@@ -69,7 +72,7 @@ export default function Oferta({ buildNow }: { buildNow: number }) {
                 <path d="m9 12 2 2 4-4" />
               </svg>
               <div>
-                <h3 className="text-lg font-semibold text-clinical">
+                <h3 className="font-[family-name:var(--font-serif)] text-lg font-medium text-clinical">
                   Garantia de {GARANTIA_DIAS} dias
                 </h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-muted">

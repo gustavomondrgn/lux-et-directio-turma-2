@@ -1,21 +1,24 @@
+import Ornament from '@/components/fx/Ornament';
 import Reveal from '@/components/Reveal';
 
 /**
  * BLOCO 2 — A VERDADE (a dor).
- * Coluna editorial estreita, tom sóbrio. Copy do 02-pagina-vendas.md, verbatim.
+ * Página de miolo de fólio: capitular dourada, coluna editorial, ornamento.
+ * Copy do 02-pagina-vendas.md, verbatim.
  */
 export default function Verdade() {
   return (
     <section className="section relative">
       <div className="wrap-narrow">
-        <Reveal>
+        <Reveal className="text-center">
           <span className="eyebrow">A verdade</span>
+          <Ornament className="mt-5" width="140px" />
         </Reveal>
 
-        <Reveal delay={80}>
+        <Reveal delay={100}>
           <p
-            className="mt-8 text-balance text-clinical"
-            style={{ fontSize: 'clamp(20px,2.6vw,28px)', lineHeight: 1.45 }}
+            className="dropcap mt-12 text-balance font-[family-name:var(--font-serif)] text-clinical"
+            style={{ fontSize: 'clamp(21px,2.8vw,30px)', lineHeight: 1.5, fontWeight: 400 }}
           >
             Você pode passar anos decorando significados e continuar travando na frente de um
             mapa real. É o <span className="italic text-gold-grad">astrólogo de catálogo</span>:
@@ -24,12 +27,10 @@ export default function Verdade() {
           </p>
         </Reveal>
 
-        <Reveal delay={160}>
-          <div className="rule-gold my-10" />
-        </Reveal>
-
         <Reveal delay={200}>
-          <p className="text-[17px] leading-relaxed text-muted sm:text-lg">
+          <p
+            className="mt-10 border-l border-goldenrod/40 pl-6 text-[17px] leading-relaxed text-muted sm:pl-8 sm:text-lg"
+          >
             O problema não é falta de conteúdo. Tá tudo nos livros. O problema é que o livro não
             corrige o seu raciocínio. Astrologia é iniciação oral: sem alguém que já trilhou o
             caminho te dando o tapa na mão, você leva anos — ou desiste.

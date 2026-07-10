@@ -94,7 +94,17 @@ export function CountdownBar({ buildNow }: { buildNow: number }) {
 }
 
 /* ---------------------------------------------------------------- BIG ---- */
-function Cell({ valor, rotulo, urg }: { valor: string; rotulo: string; urg: boolean }) {
+function Cell({
+  valor,
+  rotulo,
+  urg,
+  compact,
+}: {
+  valor: string;
+  rotulo: string;
+  urg: boolean;
+  compact: boolean;
+}) {
   return (
     <div className="flex flex-col items-center">
       <span
@@ -102,7 +112,7 @@ function Cell({ valor, rotulo, urg }: { valor: string; rotulo: string; urg: bool
           (urg ? 'text-danger-grad' : 'text-gold-grad') +
           ' font-[family-name:var(--font-mono)] font-semibold leading-none tabular-nums'
         }
-        style={{ fontSize: 'clamp(40px,11vw,86px)' }}
+        style={{ fontSize: compact ? 'clamp(30px,7.5vw,52px)' : 'clamp(40px,11vw,86px)' }}
       >
         {valor}
       </span>
@@ -113,10 +123,10 @@ function Cell({ valor, rotulo, urg }: { valor: string; rotulo: string; urg: bool
 
 /**
  * Cronômetro grande até o fim do lote vigente (Hero e seção da oferta).
- * Quando o carrinho fecha, some — quem cuida do estado "fechado" é o
- * componente de lotes.
+ * `compact` reduz a escala pro hero caber numa dobra. Quando o carrinho
+ * fecha, some — quem cuida do estado "fechado" é o componente de lotes.
  */
-export function CountdownBig({ buildNow }: { buildNow: number }) {
+export function CountdownBig({ buildNow, compact = false }: { buildNow: number; compact?: boolean }) {
   const now = useRelogio(buildNow);
   const { fase, proximoMarco } = estadoEm(now);
 
@@ -131,7 +141,7 @@ export function CountdownBig({ buildNow }: { buildNow: number }) {
         'font-[family-name:var(--font-mono)] font-semibold ' +
         (urg ? 'text-danger/50' : 'text-goldenrod/50')
       }
-      style={{ fontSize: 'clamp(28px,7vw,64px)' }}
+      style={{ fontSize: compact ? 'clamp(22px,5vw,38px)' : 'clamp(28px,7vw,64px)' }}
     >
       :
     </span>
@@ -146,16 +156,21 @@ export function CountdownBig({ buildNow }: { buildNow: number }) {
           style={{ background: 'radial-gradient(60% 80% at 50% 50%, rgba(224,35,31,.28), transparent 70%)' }}
         />
       )}
-      <div className="flex flex-wrap items-start justify-center gap-x-3 gap-y-4 sm:gap-x-5">
-        <Cell valor={String(t.dias)} rotulo="dias" urg={urg} />
+      <div
+        className={
+          'flex flex-wrap items-start justify-center gap-y-4 ' +
+          (compact ? 'gap-x-2.5 sm:gap-x-4' : 'gap-x-3 sm:gap-x-5')
+        }
+      >
+        <Cell valor={String(t.dias)} rotulo="dias" urg={urg} compact={compact} />
         <Sep />
-        <Cell valor={pad(t.horas)} rotulo="horas" urg={urg} />
+        <Cell valor={pad(t.horas)} rotulo="horas" urg={urg} compact={compact} />
         <Sep />
-        <Cell valor={pad(t.min)} rotulo="min" urg={urg} />
+        <Cell valor={pad(t.min)} rotulo="min" urg={urg} compact={compact} />
         <Sep />
-        <Cell valor={pad(t.seg)} rotulo="seg" urg={urg} />
+        <Cell valor={pad(t.seg)} rotulo="seg" urg={urg} compact={compact} />
       </div>
-      <p className="eyebrow mt-6 text-center text-[0.62rem] sm:text-[0.7rem]">
+      <p className={'eyebrow text-center text-[0.62rem] sm:text-[0.7rem] ' + (compact ? 'mt-4' : 'mt-6')}>
         {fase === 'aberto' ? 'para o preço subir' : 'para as inscrições abrirem'}
       </p>
     </div>

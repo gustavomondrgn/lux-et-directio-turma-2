@@ -1,9 +1,10 @@
 @import 'tailwindcss';
 
 /* =========================================================================
-   DESIGN SYSTEM — "Lab × Cosmos" (redesign)
-   Newsreader (serif/títulos) · Hanken Grotesk (corpo) · IBM Plex Mono (kickers/nº)
-   Escuro, dourado, editorial. Valores vindos do handoff do Claude Design.
+   DESIGN SYSTEM — "Atlas Celeste" (Lux et Directio)
+   Evolução do "Lab × Cosmos" do PQAF pra linguagem de fólio gravado:
+   frontispício, hairlines, small-caps latinas, numerais romanos, placas.
+   Newsreader (serif/títulos) · Hanken Grotesk (corpo) · IBM Plex Mono (kickers)
    ========================================================================= */
 @theme {
   /* Fundo e superfícies (do mais escuro ao mais claro) */
@@ -18,6 +19,7 @@
   --color-gold-hi: #f6e3a6;
   --color-amber: #c9962e;
   --color-goldenrod: #b8860b;
+  --color-bronze: #8a6d2f;
 
   /* Azul-aço (destaque secundário: kickers/labels) */
   --color-steel: #5a7184;
@@ -47,7 +49,7 @@
 
   /* Larguras */
   --container-content: 1180px; /* grid principal */
-  --container-editorial: 740px; /* colunas editoriais (Mecanismo, Bônus) */
+  --container-editorial: 740px; /* colunas editoriais */
 }
 
 /* =========================================================================
@@ -64,7 +66,9 @@
   }
   body {
     margin: 0;
-    background: var(--color-bg);
+    background:
+      radial-gradient(140% 90% at 50% -20%, rgba(224, 184, 76, 0.05) 0%, transparent 55%),
+      var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
     line-height: 1.6;
@@ -108,13 +112,20 @@
 @keyframes pq-rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
 @keyframes pq-sweep { from { transform: translateX(-140%) skewX(-20deg); } to { transform: translateX(420%) skewX(-20deg); } }
 @keyframes pq-ring { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.4); opacity: 0; } }
-@keyframes pq-stamp { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
-/* Pulso do selo: anel via box-shadow que cresce (spread 0→14px) e some no fade.
-   Segue o arredondamento da pill, então nunca distorce (padrão clássico ".pulsante").
-   O 1º shadow é o drop fixo (dá relevo); o 2º é o anel que pulsa. */
+/* Pulso do selo: anel via box-shadow que cresce e some no fade. */
 @keyframes pq-selo-pulse {
   from { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 0 0 rgba(224, 184, 76, 0.7); }
   to   { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 0 14px rgba(224, 184, 76, 0); }
+}
+/* Cintilar de estrela (só desktop; ver media query no fim) */
+@keyframes lx-twinkle {
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.75; }
+}
+/* Respiro do anel dourado da placa vigente (opacity-only: composição barata) */
+@keyframes lx-breathe {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
 }
 
 /* =========================================================================
@@ -133,7 +144,7 @@
     padding-inline: clamp(20px, 5vw, 28px);
   }
   .section {
-    padding-block: clamp(48px, 9vw, 128px);
+    padding-block: clamp(56px, 10vw, 140px);
   }
 
   /* Kicker/eyebrow em mono */
@@ -146,6 +157,15 @@
     color: var(--color-steel);
   }
   .eyebrow-gold { color: var(--color-gold); }
+
+  /* Small-caps latinas do frontispício (wordmark, nomes de etapa) */
+  .latin {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.38em;
+    text-indent: 0.38em; /* compensa o tracking do último caractere */
+  }
 
   /* Texto em gradiente dourado (ênfases, preços, números) */
   .text-gold-grad {
@@ -163,8 +183,109 @@
     color: transparent;
   }
 
+  /* ------------------------------------------------------------------
+     PLACA — o "cartão" desta página. Hairline em gradiente metálico
+     (border transparente + dois backgrounds), fundo levemente vinhetado.
+     ------------------------------------------------------------------ */
+  .plate {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, #101010 0%, #0c0c0c 100%) padding-box,
+      linear-gradient(165deg,
+        rgba(224, 184, 76, 0.38) 0%,
+        rgba(224, 184, 76, 0.08) 28%,
+        rgba(90, 113, 132, 0.14) 55%,
+        rgba(224, 184, 76, 0.06) 78%,
+        rgba(224, 184, 76, 0.28) 100%) border-box;
+  }
+  .plate-gold {
+    background:
+      linear-gradient(180deg, #171410 0%, #100e0a 100%) padding-box,
+      linear-gradient(165deg,
+        rgba(246, 227, 166, 0.85) 0%,
+        rgba(224, 184, 76, 0.35) 30%,
+        rgba(184, 134, 11, 0.5) 55%,
+        rgba(224, 184, 76, 0.3) 75%,
+        rgba(246, 227, 166, 0.7) 100%) border-box;
+    box-shadow: 0 40px 90px -40px rgba(224, 184, 76, 0.4);
+  }
+  /* Anel externo que "respira" na placa vigente */
+  .plate-live::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border: 1px solid rgba(224, 184, 76, 0.5);
+    border-radius: 20px;
+    pointer-events: none;
+    animation: lx-breathe 3.2s ease-in-out infinite;
+  }
+
+  /* Cantoneiras gravadas (ticks nos 4 cantos, por dentro da borda) */
+  .ticks::before {
+    content: '';
+    position: absolute;
+    inset: 9px;
+    pointer-events: none;
+    background:
+      linear-gradient(to right, rgba(224,184,76,.55), rgba(224,184,76,.55)) left top / 12px 1px,
+      linear-gradient(to bottom, rgba(224,184,76,.55), rgba(224,184,76,.55)) left top / 1px 12px,
+      linear-gradient(to left, rgba(224,184,76,.55), rgba(224,184,76,.55)) right top / 12px 1px,
+      linear-gradient(to bottom, rgba(224,184,76,.55), rgba(224,184,76,.55)) right top / 1px 12px,
+      linear-gradient(to right, rgba(224,184,76,.55), rgba(224,184,76,.55)) left bottom / 12px 1px,
+      linear-gradient(to top, rgba(224,184,76,.55), rgba(224,184,76,.55)) left bottom / 1px 12px,
+      linear-gradient(to left, rgba(224,184,76,.55), rgba(224,184,76,.55)) right bottom / 12px 1px,
+      linear-gradient(to top, rgba(224,184,76,.55), rgba(224,184,76,.55)) right bottom / 1px 12px;
+    background-repeat: no-repeat;
+  }
+
+  /* Índice de fólio: nome ..... número (a linha pontilhada estica) */
+  .leader {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55em;
+  }
+  .leader-dots {
+    flex: 1;
+    min-width: 24px;
+    border-bottom: 1px dotted rgba(154, 146, 130, 0.38);
+    transform: translateY(-0.28em);
+  }
+
+  /* Capitular editorial (bloco "A verdade") */
+  .dropcap::first-letter {
+    font-family: var(--font-serif);
+    float: left;
+    font-size: 3.6em;
+    line-height: 0.8;
+    padding: 0.04em 0.14em 0 0;
+    color: var(--color-gold);
+  }
+
+  /* Carimbo de lote encerrado */
+  .stamp {
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    transform: translate(-50%, -50%) rotate(-9deg);
+    border: 1px solid rgba(224, 35, 31, 0.4);
+    border-radius: 4px;
+    padding: 0.3rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    text-indent: 0.34em;
+    text-transform: uppercase;
+    color: rgba(255, 106, 92, 0.6);
+    pointer-events: none;
+  }
+
   /* Botão primário (CTA dourado) */
   .btn-gold {
+    position: relative;
+    overflow: hidden;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -172,18 +293,31 @@
     gap: 0.1rem;
     background: linear-gradient(180deg, #edca6c 0%, #cd9a30 100%);
     color: #0a0a0a;
-    border-radius: 14px;
+    border-radius: 12px;
     font-weight: 700;
     line-height: 1.15;
     padding: 1rem 2rem;
-    box-shadow: 0 22px 56px -16px rgba(224, 184, 76, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0 22px 56px -16px rgba(224, 184, 76, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     will-change: transform;
   }
+  /* Lâmina de luz que varre o botão no hover (desktop) */
+  .btn-gold::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 34%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transform: translateX(-140%) skewX(-20deg);
+    pointer-events: none;
+  }
+  .btn-gold:hover::after { animation: pq-sweep 0.9s ease; }
   .btn-gold:hover {
     transform: translateY(-3px);
     filter: brightness(1.06);
-    box-shadow: 0 28px 66px -14px rgba(224, 184, 76, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0 28px 66px -14px rgba(224, 184, 76, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   }
   .btn-gold:active { transform: translateY(-1px); }
 
@@ -196,7 +330,7 @@
     gap: 0.1rem;
     border: 1px solid rgba(184, 134, 11, 0.55);
     color: var(--color-gold);
-    border-radius: 14px;
+    border-radius: 12px;
     font-weight: 600;
     line-height: 1.15;
     padding: 1rem 2rem;
@@ -226,11 +360,19 @@
     background: linear-gradient(90deg, transparent, var(--color-goldenrod) 50%, transparent);
   }
 
-  /* Scroll-reveal (componente <Reveal>).
-     Só esconde quando há JS (classe .js no <html>, via script inline no layout).
-     Sem JS — ou se a hidratação falhar — o conteúdo aparece normal, em vez de
-     ficar preso em opacity:0 (era a causa da "tela preta" ao rolar no WebView
-     do Facebook, onde o JS às vezes não roda). */
+  /* Numeral romano fantasma (ornamento atrás das etapas) */
+  .ghost-numeral {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(224, 184, 76, 0.16);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* Scroll-reveal (componente <Reveal>). Só esconde quando há JS (.js no
+     <html>); sem JS o conteúdo aparece normal — guarda anti-"tela preta". */
   .js [data-reveal] {
     opacity: 0;
     transform: translateY(24px);
@@ -240,9 +382,6 @@
     opacity: 1;
     transform: none;
   }
-  /* Rede de segurança: o script inline marca .reveal-fallback quando detecta um
-     elemento visível na tela que continuou escondido (observer não disparou /
-     bundle não executou). Aí tudo reaparece na hora. */
   .reveal-fallback [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
@@ -254,11 +393,15 @@
     animation: pq-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
-  /* Selo "melhor opção" — halo dourado que expande atrás da pill e some no fade.
-     Fica ATRÁS da pill (a pill não escala); repete com uma pausa no final. */
+  /* Selo "lote atual" — halo dourado que expande e some no fade */
   .selo-pulse {
     animation: pq-selo-pulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
   }
+}
+
+/* Estrelas que cintilam: só desktop e só sem reduced-motion (opacity-only) */
+@media (min-width: 641px) and (prefers-reduced-motion: no-preference) {
+  .tw { animation: lx-twinkle 4.5s ease-in-out infinite; }
 }
 
 /* =========================================================================
@@ -277,9 +420,8 @@
 
 /* =========================================================================
    MOBILE — alivia compositing pesado no scroll (evita jank em celular)
-   O grão de filme é um overlay fixo com mix-blend-mode: repinta a cada frame.
-   A 0.08 de opacidade é imperceptível no celular, então desliga.
    ========================================================================= */
 @media (max-width: 640px) {
   .film-grain { display: none; }
+  .plate-live::after { animation: none; opacity: 0.7; }
 }

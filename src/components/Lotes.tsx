@@ -1,5 +1,6 @@
 'use client';
 
+import Emblema from '@/components/fx/Emblema';
 import { cn } from '@/lib/cn';
 import { useRelogio } from '@/hooks/useRelogio';
 import { brl, estadoEm, exibeParcelado, parcela, parcelado, ultimoDiaLabel, type StatusLote } from '@/lib/lotes';
@@ -15,21 +16,24 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-[20px] p-6 transition-opacity sm:p-7',
-        vigente
-          ? 'border border-gold bg-surface-4 shadow-[0_0_0_1px_rgba(184,134,11,.35),0_40px_90px_-40px_rgba(224,184,76,.45)]'
-          : 'border border-line bg-surface-2',
+        'flex flex-col p-6 transition-opacity sm:p-7',
+        vigente ? 'plate plate-gold plate-live ticks' : 'plate',
         encerrado && 'opacity-45',
       )}
     >
       {vigente && (
-        <span className="selo-pulse absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[linear-gradient(180deg,#edca6c,#cd9a30)] px-4 py-1 font-[family-name:var(--font-mono)] text-[0.68rem] font-semibold uppercase tracking-wider text-[#0a0a0a]">
+        <span className="selo-pulse absolute -top-3.5 left-1/2 z-[1] -translate-x-1/2 whitespace-nowrap rounded-full bg-[linear-gradient(180deg,#edca6c,#cd9a30)] px-4 py-1 font-[family-name:var(--font-mono)] text-[0.68rem] font-semibold uppercase tracking-wider text-[#0a0a0a]">
           Lote atual
         </span>
       )}
 
+      {/* carimbo de encerrado sobre a placa */}
+      {encerrado && <span className="stamp">Encerrado</span>}
+
       <div className="flex items-baseline justify-between gap-3">
-        <span className={cn('eyebrow', vigente && 'eyebrow-gold')}>{lote.nome}</span>
+        <span className={cn('latin text-[0.7rem]', vigente ? 'text-gold' : 'text-steel')}>
+          {lote.nome}
+        </span>
         <span className="font-[family-name:var(--font-mono)] text-[0.62rem] uppercase tracking-wider text-muted-3">
           {encerrado ? 'encerrado' : `até ${ultimoDiaLabel(lote)}`}
         </span>
@@ -41,32 +45,30 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
           --------------------------------------------------------------------- */}
       {exibeParcelado(status) ? (
         <>
-          <p className="mt-6 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-muted">
+          <p className="mt-7 font-[family-name:var(--font-mono)] text-xs uppercase tracking-widest text-muted">
             {PARCELAS}x de
           </p>
           <div className="mt-1 flex items-end gap-1">
             <span className="mb-1 text-sm font-medium text-muted">R$</span>
             <span
-              className="text-gold-grad font-[family-name:var(--font-mono)] font-semibold leading-none"
-              style={{ fontSize: 'clamp(52px,9vw,72px)' }}
+              className="text-gold-grad font-[family-name:var(--font-serif)] font-medium leading-none"
+              style={{ fontSize: 'clamp(56px,9vw,76px)' }}
             >
               {brl(parcela(lote.preco))}
             </span>
           </div>
-          <p className="mt-3 text-sm text-muted">
-            ou R${brl(lote.preco)} à vista
-          </p>
+          <p className="mt-3 text-sm text-muted">ou R${brl(lote.preco)} à vista</p>
         </>
       ) : (
         <>
-          <div className="mt-6 flex items-end gap-1">
+          <div className="mt-7 flex items-end gap-1">
             <span className="mb-1 text-sm font-medium text-muted">R$</span>
             <span
               className={cn(
-                'font-[family-name:var(--font-mono)] font-semibold leading-none',
+                'font-[family-name:var(--font-serif)] font-medium leading-none',
                 encerrado ? 'text-muted line-through decoration-danger/60' : 'text-clinical',
               )}
-              style={{ fontSize: 'clamp(44px,7.5vw,60px)' }}
+              style={{ fontSize: 'clamp(46px,7.5vw,62px)' }}
             >
               {brl(lote.preco)}
             </span>
@@ -95,7 +97,7 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
             </p>
           </>
         ) : (
-          <p className="text-center font-[family-name:var(--font-mono)] text-[0.65rem] uppercase tracking-wider text-muted-3">
+          <p className="border-t border-line pt-5 text-center font-[family-name:var(--font-mono)] text-[0.65rem] uppercase tracking-[0.2em] text-muted-3">
             {encerrado ? 'Indisponível' : 'Ainda não liberado'}
           </p>
         )}
@@ -108,12 +110,18 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
 function CarrinhoFechado() {
   const zap = isLinkReady(LINKS.whatsapp);
   return (
-    <div className="mx-auto max-w-[52ch] rounded-[20px] border border-line bg-surface-2 p-8 text-center sm:p-12">
-      <span className="eyebrow">Turma 2</span>
-      <h3 className="mt-4" style={{ fontSize: 'clamp(28px,4.5vw,40px)' }}>
+    <div className="plate ticks mx-auto max-w-[54ch] p-8 text-center sm:p-12">
+      <span className="mx-auto flex justify-center">
+        <Emblema size={52} opacity={0.85} />
+      </span>
+      <span className="latin mt-6 block text-[0.72rem] text-steel">Turma 2</span>
+      <h3
+        className="mt-4"
+        style={{ fontSize: 'clamp(28px,4.5vw,42px)', fontWeight: 500 }}
+      >
         As inscrições <span className="italic text-gold-grad">encerraram.</span>
       </h3>
-      <p className="mt-5 text-muted">
+      <p className="mt-5 leading-relaxed text-muted">
         Os três lotes fecharam e a turma está completa. A partir de agora, a mentoria volta
         a existir apenas no formato individual — a R${brl(PRECO_INDIVIDUAL)}.
       </p>
@@ -136,7 +144,7 @@ export default function Lotes({ buildNow }: { buildNow: number }) {
   if (fase === 'fechado') return <CarrinhoFechado />;
 
   return (
-    <div className="grid gap-5 sm:gap-6 lg:grid-cols-3" suppressHydrationWarning>
+    <div className="grid gap-6 pt-4 sm:gap-7 lg:grid-cols-3" suppressHydrationWarning>
       {lotes.map(({ lote, status }) => (
         <LoteCard key={lote.n} lote={lote} status={status} />
       ))}
@@ -145,7 +153,7 @@ export default function Lotes({ buildNow }: { buildNow: number }) {
 }
 
 /* ------------------------------------------------- PREÇO DO LOTE VIGENTE -- */
-/** Chip de preço do Hero: âncora riscada → parcelado do lote vigente. */
+/** Placa de preço do Hero: âncora riscada → parcelado do lote vigente. */
 export function PrecoVigente({ buildNow }: { buildNow: number }) {
   const now = useRelogio(buildNow, 30_000);
   const { vigente } = estadoEm(now);
@@ -154,17 +162,21 @@ export function PrecoVigente({ buildNow }: { buildNow: number }) {
 
   return (
     <div
-      className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border px-5 py-2.5"
-      style={{ borderColor: 'rgba(184,134,11,0.35)', background: 'rgba(224,184,76,0.04)' }}
+      className="plate ticks inline-flex flex-col items-center gap-0.5 px-8 py-4 sm:px-11 sm:py-5"
       suppressHydrationWarning
     >
-      <span className="text-base text-muted line-through decoration-goldenrod/70 sm:text-lg">
-        R${brl(PRECO_INDIVIDUAL)}
+      <span className="flex items-baseline gap-3">
+        <span className="text-sm text-muted line-through decoration-goldenrod/70 sm:text-base">
+          R${brl(PRECO_INDIVIDUAL)}
+        </span>
+        <span className="font-[family-name:var(--font-mono)] text-[0.6rem] uppercase tracking-[0.24em] text-muted-3">
+          hoje
+        </span>
       </span>
-      <span className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.2em] text-muted-3">
-        hoje
-      </span>
-      <span className="text-gold-grad text-3xl font-bold leading-none sm:text-4xl">
+      <span
+        className="text-gold-grad font-[family-name:var(--font-serif)] font-medium leading-tight"
+        style={{ fontSize: 'clamp(27px,4vw,38px)' }}
+      >
         {parcelado(vigente.preco)}
       </span>
     </div>

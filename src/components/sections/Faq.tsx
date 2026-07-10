@@ -13,7 +13,7 @@ export default function Faq() {
           <span className="eyebrow">Dúvidas</span>
         </Reveal>
         <Reveal delay={80}>
-          <h2 className="mt-6" style={{ fontSize: 'clamp(28px,4.4vw,44px)' }}>
+          <h2 className="mt-6" style={{ fontSize: 'clamp(29px,4.6vw,48px)', fontWeight: 500 }}>
             Perguntas <span className="italic text-gold-grad">frequentes</span>
           </h2>
         </Reveal>
@@ -22,7 +22,7 @@ export default function Faq() {
           {FAQ.map((item, i) => (
             <Reveal key={item.p} delay={120 + i * 60}>
               <details className="group">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-6 text-left text-lg font-medium text-clinical marker:hidden hover:text-ink">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-6 text-left font-[family-name:var(--font-serif)] text-lg font-medium text-clinical marker:hidden hover:text-ink sm:text-xl">
                   <span>{item.p}</span>
                   <svg
                     aria-hidden

@@ -55,7 +55,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+    // suppressHydrationWarning: o script inline abaixo adiciona .js ao <html>
+    // ANTES da hidratação (de propósito — guarda anti-"tela preta"), e o React
+    // reclamaria da diferença de className. Só silencia neste elemento.
+    <html
+      lang="pt-BR"
+      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         {/*
           Guarda anti-"tela preta" (herdada do PQAF, onde o bug apareceu no

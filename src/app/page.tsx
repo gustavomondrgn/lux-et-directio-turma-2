@@ -1,6 +1,7 @@
 import { CountdownBar } from '@/components/Countdown';
 import StickyCta from '@/components/StickyCta';
 import CursorGlow from '@/components/fx/CursorGlow';
+import Emblema from '@/components/fx/Emblema';
 import FilmGrain from '@/components/fx/FilmGrain';
 import Bonus from '@/components/sections/Bonus';
 import Caminho from '@/components/sections/Caminho';
@@ -42,14 +43,15 @@ export default function Home() {
         <CtaFinal buildNow={buildNow} />
       </main>
 
-      <footer id="site-footer" className="relative border-t border-line px-5 py-14 text-center">
-        <p className="font-[family-name:var(--font-serif)] text-xl font-semibold italic text-clinical">
-          Lux et Directio
-        </p>
-        <p className="mt-1.5 text-sm text-muted">
+      <footer id="site-footer" className="relative border-t border-line px-5 py-16 text-center">
+        <span className="flex justify-center">
+          <Emblema size={44} opacity={0.8} />
+        </span>
+        <p className="latin mt-5 text-[0.78rem] text-gold">Lux et Directio</p>
+        <p className="mt-2 text-sm text-muted">
           Mentoria de formação em astrologia · Yuri dos Anjos
         </p>
-        <p className="mt-5 font-[family-name:var(--font-mono)] text-xs text-muted-3">
+        <p className="mt-6 font-[family-name:var(--font-mono)] text-xs text-muted-3">
           © {new Date().getFullYear()} Yuri dos Anjos. Todos os direitos reservados.
         </p>
       </footer>
