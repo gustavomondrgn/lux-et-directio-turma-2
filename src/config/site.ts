@@ -66,7 +66,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-10T00:00:00-03:00',
     fim: '2026-07-11T00:00:00-03:00', // vale até 10/07 23:59:59
     preco: 1500,
-    parcela: null, // PENDENTE: valor da parcela do lote 2 (o lote 1 é 12x R$120)
+    parcela: 150,
     checkout: msgLote('02'),
   },
   {
@@ -75,7 +75,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-11T00:00:00-03:00',
     fim: '2026-07-12T00:00:00-03:00', // vale até 11/07 23:59:59
     preco: 2000,
-    parcela: null, // PENDENTE: valor da parcela do lote 3
+    parcela: 200,
     checkout: msgLote('03'),
   },
 ] as const;
