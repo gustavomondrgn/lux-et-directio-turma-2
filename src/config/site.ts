@@ -194,12 +194,6 @@ export const BONUS: {
 export const BONUS_RODAPE = 'Acesso imediato e vitalício aos bônus gravados';
 
 /* -------------------------------------------------------------------------
-   GARANTIA — redutor de risco. [opcional — Gustavo decide]
-   ------------------------------------------------------------------------- */
-export const GARANTIA_ATIVA = true;
-export const GARANTIA_DIAS = 7;
-
-/* -------------------------------------------------------------------------
    PROVA — a 1ª turma.
    ------------------------------------------------------------------------- */
 export const TURMA_1_ALUNOS = 12;

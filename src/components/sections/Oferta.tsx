@@ -2,7 +2,7 @@ import { CountdownBig } from '@/components/Countdown';
 import Lotes from '@/components/Lotes';
 import Reveal from '@/components/Reveal';
 import { brl } from '@/lib/lotes';
-import { GARANTIA_ATIVA, GARANTIA_DIAS, PRECO_GRUPO, PRECO_INDIVIDUAL } from '@/config/site';
+import { PRECO_GRUPO, PRECO_INDIVIDUAL } from '@/config/site';
 
 /**
  * BLOCO 9 — OFERTA + URGÊNCIA.
@@ -55,35 +55,6 @@ export default function Oferta({ buildNow }: { buildNow: number }) {
             <Lotes buildNow={buildNow} />
           </div>
         </Reveal>
-
-        {GARANTIA_ATIVA && (
-          <Reveal delay={320}>
-            <div className="plate mx-auto mt-14 flex max-w-[54ch] items-start gap-4 p-6 sm:p-7">
-              <svg
-                aria-hidden
-                viewBox="0 0 24 24"
-                className="mt-0.5 h-6 w-6 shrink-0 text-gold"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 3 4 6v6c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V6l-8-3Z" />
-                <path d="m9 12 2 2 4-4" />
-              </svg>
-              <div>
-                <h3 className="font-[family-name:var(--font-serif)] text-lg font-medium text-clinical">
-                  Garantia de {GARANTIA_DIAS} dias
-                </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted">
-                  Entrou, não era pra você? Peça o dinheiro de volta em até {GARANTIA_DIAS} dias.
-                  É o que o Código de Defesa do Consumidor garante — risco zero, por lei.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        )}
       </div>
     </section>
   );
