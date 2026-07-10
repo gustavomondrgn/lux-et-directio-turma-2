@@ -58,7 +58,12 @@ export default function CtaButton({
       className={cn(variant === 'gold' ? 'btn-gold' : 'btn-outline', fullWidth && 'w-full', className)}
       style={
         big
-          ? { padding: 'clamp(1rem,2.4vw,1.25rem) clamp(2rem,5vw,2.75rem)', fontSize: 'clamp(1rem,2vw,1.15rem)' }
+          ? {
+              // O padding vertical olha a ALTURA da viewport: num laptop de 768px
+              // o botão precisa caber na dobra junto com o preço e o cronômetro.
+              padding: 'clamp(0.72rem,1.8vh,1.25rem) clamp(2rem,5vw,2.75rem)',
+              fontSize: 'clamp(1rem,2vw,1.15rem)',
+            }
           : undefined
       }
     >

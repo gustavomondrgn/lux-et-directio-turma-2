@@ -112,11 +112,21 @@ function Cell({
           (urg ? 'text-danger-grad' : 'text-gold-grad') +
           ' font-[family-name:var(--font-mono)] font-semibold leading-none tabular-nums'
         }
-        style={{ fontSize: compact ? 'clamp(30px,7.5vw,52px)' : 'clamp(40px,11vw,86px)' }}
+        style={{
+          // no modo compacto (hero) o número também obedece à ALTURA da tela:
+          // num laptop 768px ele não pode roubar a dobra do CTA.
+          fontSize: compact ? 'min(clamp(28px,7vw,52px), 5.6vh)' : 'clamp(40px,11vw,86px)',
+        }}
       >
         {valor}
       </span>
-      <span className="eyebrow mt-2 text-[0.6rem] sm:text-[0.7rem]">{rotulo}</span>
+      <span
+        className={
+          'eyebrow text-[0.6rem] sm:text-[0.7rem] ' + (compact ? 'mt-1.5' : 'mt-2')
+        }
+      >
+        {rotulo}
+      </span>
     </div>
   );
 }
@@ -141,7 +151,9 @@ export function CountdownBig({ buildNow, compact = false }: { buildNow: number; 
         'font-[family-name:var(--font-mono)] font-semibold ' +
         (urg ? 'text-danger/50' : 'text-goldenrod/50')
       }
-      style={{ fontSize: compact ? 'clamp(22px,5vw,38px)' : 'clamp(28px,7vw,64px)' }}
+      style={{
+        fontSize: compact ? 'min(clamp(20px,4.6vw,38px), 4vh)' : 'clamp(28px,7vw,64px)',
+      }}
     >
       :
     </span>

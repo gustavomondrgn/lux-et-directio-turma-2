@@ -92,8 +92,8 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
             </CtaButton>
             <p className="mt-3 text-center font-[family-name:var(--font-mono)] text-[0.65rem] text-muted-3">
               {linkPronto
-                ? 'O checkout é feito pela InfinitePay, com cartão ou Pix.'
-                : 'PENDENTE: link de checkout do lote.'}
+                ? 'Você fala direto com a equipe no WhatsApp.'
+                : 'PENDENTE: link do lote.'}
             </p>
           </>
         ) : (
@@ -162,7 +162,7 @@ export function PrecoVigente({ buildNow }: { buildNow: number }) {
 
   return (
     <div
-      className="plate ticks inline-flex flex-col items-center gap-0.5 px-8 py-4 sm:px-11 sm:py-5"
+      className="plate ticks inline-flex flex-col items-center gap-0.5 px-8 py-[clamp(10px,1.8vh,20px)] sm:px-11"
       suppressHydrationWarning
     >
       <span className="flex items-baseline gap-3">
@@ -175,7 +175,7 @@ export function PrecoVigente({ buildNow }: { buildNow: number }) {
       </span>
       <span
         className="text-gold-grad font-[family-name:var(--font-serif)] font-medium leading-tight"
-        style={{ fontSize: 'clamp(27px,4vw,38px)' }}
+        style={{ fontSize: 'min(clamp(26px,3.8vw,38px), 4.4vh)' }}
       >
         {parcelado(vigente.preco)}
       </span>

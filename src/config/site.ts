@@ -22,11 +22,21 @@ export interface Lote {
   /** Preço à vista, em reais. */
   preco: number;
   /**
-   * Link de checkout InfinitePay deste lote.
-   * PENDENTE — enquanto for '#', o botão fica desabilitado visualmente.
+   * Link de WhatsApp deste lote (wa.me com mensagem pré-preenchida).
+   * NÃO é checkout: o lead cai na conversa e a venda é fechada na mão.
+   * A mensagem já identifica de qual lote a pessoa veio.
+   * Enquanto for '#', o botão fica desabilitado visualmente.
    */
   checkout: string;
 }
+
+const WA = 'https://wa.me/556299623961?text=';
+/** Mensagem pré-preenchida do lead. Encode já aplicado pelo helper. */
+const msgLote = (n: string) =>
+  WA +
+  encodeURIComponent(
+    `Eu quero entrar na Turma 02 da Mentoria de Formação para Astrólogos no Lote ${n}`,
+  );
 
 export const LOTES: readonly Lote[] = [
   {
@@ -35,7 +45,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-09T00:00:00-03:00',
     fim: '2026-07-10T00:00:00-03:00', // vale até 09/07 23:59:59
     preco: 1200,
-    checkout: '#', // PENDENTE: link InfinitePay do lote 1
+    checkout: msgLote('01'),
   },
   {
     n: 2,
@@ -43,7 +53,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-10T00:00:00-03:00',
     fim: '2026-07-11T00:00:00-03:00', // vale até 10/07 23:59:59
     preco: 1500,
-    checkout: '#', // PENDENTE: link InfinitePay do lote 2
+    checkout: msgLote('02'),
   },
   {
     n: 3,
@@ -51,7 +61,7 @@ export const LOTES: readonly Lote[] = [
     inicio: '2026-07-11T00:00:00-03:00',
     fim: '2026-07-12T00:00:00-03:00', // vale até 11/07 23:59:59
     preco: 2000,
-    checkout: '#', // PENDENTE: link InfinitePay do lote 3
+    checkout: msgLote('03'),
   },
 ] as const;
 
@@ -71,12 +81,12 @@ export const PRECO_INDIVIDUAL = 3000;
 export const DATA_SIMULADA: string | null = null;
 
 /* -------------------------------------------------------------------------
-   LINKS PENDENTES — o Gustavo passa os reais.
-   Enquanto forem '#', os CTAs ficam desabilitados visualmente.
+   LINKS. Enquanto forem '#', os CTAs ficam desabilitados visualmente.
    ------------------------------------------------------------------------- */
 export const LINKS = {
-  /** Grupo/contato de WhatsApp pra dúvidas e pro carrinho fechado. */
-  whatsapp: '#', // PENDENTE
+  /** WhatsApp do carrinho fechado — quem chega tarde e quer o individual. */
+  whatsapp:
+    WA + encodeURIComponent('Quero saber sobre a mentoria individual de astrologia'),
 } as const;
 
 /** Helper: o link já está preenchido (diferente do placeholder)? */
@@ -163,12 +173,25 @@ export const GARANTIA_ATIVA = true;
 export const GARANTIA_DIAS = 7;
 
 /* -------------------------------------------------------------------------
-   PROVA — depoimentos da 1ª turma. PENDENTE: coletar.
+   PROVA — a 1ª turma.
    ------------------------------------------------------------------------- */
 export const TURMA_1_ALUNOS = 12;
-export const DEPOIMENTOS: { nome: string; texto: string }[] = [
-  // PENDENTE: colar depoimentos reais da 1ª turma aqui.
-];
+
+/**
+ * O depoimento em vídeo (um só, paisagem). Os arquivos vivem em `public/video/`
+ * e são servidos sob o basePath. WebM/VP9 é a fonte principal; o MP4 existe só
+ * como rede de segurança pra Safari antigo.
+ */
+export const DEPOIMENTO_VIDEO = {
+  webm: '/mentoria/video/depoimento-01.webm',
+  mp4: '/mentoria/video/depoimento-01.mp4',
+  poster: '/mentoria/video/depoimento-01-poster.webp',
+  /** PENDENTE: nome do aluno, pra legenda sob o vídeo. */
+  autor: '',
+} as const;
+
+/** Depoimentos em texto (opcional — hoje a prova é o vídeo acima). */
+export const DEPOIMENTOS: { nome: string; texto: string }[] = [];
 
 /* -------------------------------------------------------------------------
    FAQ — PENDENTE: respostas finais do Gustavo/Yuri.
@@ -188,7 +211,7 @@ export const FAQ: { p: string; r: string }[] = [
   },
   {
     p: 'Como funciona o parcelamento?',
-    r: 'PENDENTE: resposta. (Checkout InfinitePay, cartão ou Pix.)',
+    r: 'PENDENTE: resposta. (A venda é fechada no WhatsApp — confirmar formas de pagamento e em quantas vezes.)',
   },
   {
     p: 'Quando começa a turma?',
@@ -203,5 +226,6 @@ export const SEO = {
   titulo: 'Lux et Directio — Mentoria de Astrologia com Yuri dos Anjos',
   descricao:
     'Formação completa de astrólogos: do zero à leitura profissional de mapa. 17 encontros ao vivo, em grupo, com cada exercício seu corrigido pelo Yuri. 2ª turma.',
-  ogImage: '/mentoria/og-image.jpg', // PENDENTE: og:image final
+  /** 1200×630, a águia sobre o fundo escuro. Gerada de public/marca/. */
+  ogImage: '/mentoria/og-image.jpg',
 } as const;

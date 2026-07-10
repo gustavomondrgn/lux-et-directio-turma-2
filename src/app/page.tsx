@@ -1,8 +1,8 @@
 import { CountdownBar } from '@/components/Countdown';
 import StickyCta from '@/components/StickyCta';
 import CursorGlow from '@/components/fx/CursorGlow';
-import Emblema from '@/components/fx/Emblema';
 import FilmGrain from '@/components/fx/FilmGrain';
+import Marca from '@/components/fx/Marca';
 import Bonus from '@/components/sections/Bonus';
 import Caminho from '@/components/sections/Caminho';
 import CtaFinal from '@/components/sections/CtaFinal';
@@ -45,9 +45,9 @@ export default function Home() {
 
       <footer id="site-footer" className="relative border-t border-line px-5 py-16 text-center">
         <span className="flex justify-center">
-          <Emblema size={44} opacity={0.8} />
+          <Marca variant="sm" size={104} className="opacity-90" />
         </span>
-        <p className="latin mt-5 text-[0.78rem] text-gold">Lux et Directio</p>
+        <p className="latin mt-4 text-[0.78rem] text-gold">Lux et Directio</p>
         <p className="mt-2 text-sm text-muted">
           Mentoria de formação em astrologia · Yuri dos Anjos
         </p>

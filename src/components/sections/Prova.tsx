@@ -1,13 +1,13 @@
+import Depoimento from '@/components/Depoimento';
+import Ornament from '@/components/fx/Ornament';
 import Reveal from '@/components/Reveal';
-import { DEPOIMENTOS, TOTAL_ENCONTROS, TURMA_1_ALUNOS } from '@/config/site';
+import { DEPOIMENTO_VIDEO, DEPOIMENTOS, TOTAL_ENCONTROS, TURMA_1_ALUNOS } from '@/config/site';
 
 /**
  * BLOCO 7 — PROVA.
- * Números gravados em serif (placas), depoimentos como excertos de fólio.
- * O aviso de PENDENTE só existe em `npm run dev` — nunca na página publicada.
+ * Números gravados em serif (placas) + o depoimento em vídeo de um aluno da
+ * 1ª turma. Depoimentos em texto (se algum dia existirem) entram abaixo.
  */
-const MOSTRAR_PENDENCIAS = process.env.NODE_ENV !== 'production';
-
 const NUMEROS = [
   { valor: String(TURMA_1_ALUNOS), rotulo: 'alunos na 1ª turma' },
   { valor: '1ª', rotulo: 'turma em andamento' },
@@ -15,8 +15,6 @@ const NUMEROS = [
 ];
 
 export default function Prova() {
-  const temDepoimentos = DEPOIMENTOS.length > 0;
-
   return (
     <section className="section relative border-t border-line">
       <div className="wrap">
@@ -52,8 +50,28 @@ export default function Prova() {
           ))}
         </div>
 
-        {temDepoimentos && (
-          <div className="mx-auto mt-12 grid max-w-[var(--container-content)] gap-5 sm:grid-cols-2">
+        {/* O depoimento em vídeo */}
+        <Reveal delay={200}>
+          <Ornament className="mt-20" width="150px" />
+        </Reveal>
+
+        <Reveal delay={260}>
+          <p className="eyebrow mt-8 text-center">Quem já está lá dentro</p>
+        </Reveal>
+
+        <Reveal delay={320}>
+          <div className="mx-auto mt-8 max-w-[900px]">
+            <Depoimento />
+            {DEPOIMENTO_VIDEO.autor && (
+              <p className="mt-5 text-center font-[family-name:var(--font-mono)] text-[0.68rem] uppercase tracking-[0.2em] text-muted-3">
+                {DEPOIMENTO_VIDEO.autor} · aluno da 1ª turma
+              </p>
+            )}
+          </div>
+        </Reveal>
+
+        {DEPOIMENTOS.length > 0 && (
+          <div className="mx-auto mt-14 grid max-w-[var(--container-content)] gap-5 sm:grid-cols-2">
             {DEPOIMENTOS.map((d, i) => (
               <Reveal key={d.nome} delay={140 + i * 80}>
                 <figure className="plate h-full p-7 sm:p-8">
@@ -70,19 +88,6 @@ export default function Prova() {
                 </figure>
               </Reveal>
             ))}
-          </div>
-        )}
-
-        {!temDepoimentos && MOSTRAR_PENDENCIAS && (
-          <div className="mx-auto mt-12 max-w-[var(--container-editorial)] rounded-2xl border border-dashed border-danger/50 p-8 text-center">
-            <p className="font-[family-name:var(--font-mono)] text-sm text-danger-hi">
-              PENDENTE — depoimentos da 1ª turma
-            </p>
-            <p className="mt-2 text-sm text-muted">
-              Preencha <code className="text-clinical">DEPOIMENTOS</code> em{' '}
-              <code className="text-clinical">src/config/site.ts</code>. Este aviso não aparece na
-              página publicada.
-            </p>
           </div>
         )}
       </div>
