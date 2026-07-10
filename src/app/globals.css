@@ -1,0 +1,285 @@
+@import 'tailwindcss';
+
+/* =========================================================================
+   DESIGN SYSTEM — "Lab × Cosmos" (redesign)
+   Newsreader (serif/títulos) · Hanken Grotesk (corpo) · IBM Plex Mono (kickers/nº)
+   Escuro, dourado, editorial. Valores vindos do handoff do Claude Design.
+   ========================================================================= */
+@theme {
+  /* Fundo e superfícies (do mais escuro ao mais claro) */
+  --color-bg: #08080a;
+  --color-surface: #0a0a0a;
+  --color-surface-2: #0d0d0d;
+  --color-surface-3: #0f0f0f;
+  --color-surface-4: #141414;
+
+  /* Dourado / âmbar (destaque primário) */
+  --color-gold: #e0b84c;
+  --color-gold-hi: #f6e3a6;
+  --color-amber: #c9962e;
+  --color-goldenrod: #b8860b;
+
+  /* Azul-aço (destaque secundário: kickers/labels) */
+  --color-steel: #5a7184;
+  --color-steel-2: #7c93a3;
+
+  /* Vermelho de urgência ("última chamada") */
+  --color-danger: #e0231f;
+  --color-danger-hi: #ff6a5c;
+
+  /* Texto */
+  --color-ink: #f5f5f5;
+  --color-ink-2: #f0f0f0;
+  --color-clinical: #e8edf0;
+  --color-muted: #a8a8a8;
+  --color-muted-2: #9a9282;
+  --color-muted-3: #8a8278;
+
+  /* Bordas / divisores */
+  --color-line: #232323;
+  --color-line-2: #262626;
+  --color-line-gold: #1d1a12;
+
+  /* Tipografia (famílias injetadas via next/font no layout) */
+  --font-serif: var(--font-newsreader), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-hanken), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Larguras */
+  --container-content: 1180px; /* grid principal */
+  --container-editorial: 740px; /* colunas editoriais (Mecanismo, Bônus) */
+}
+
+/* =========================================================================
+   BASE
+   ========================================================================= */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-bg);
+  }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  ::selection {
+    background: var(--color-amber);
+    color: #0a0a0a;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* =========================================================================
+   KEYFRAMES
+   ========================================================================= */
+@keyframes pq-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.78); }
+}
+@keyframes pq-spin { to { transform: rotate(360deg); } }
+@keyframes pq-spin-r { to { transform: rotate(-360deg); } }
+@keyframes pq-rise { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+@keyframes pq-sweep { from { transform: translateX(-140%) skewX(-20deg); } to { transform: translateX(420%) skewX(-20deg); } }
+@keyframes pq-ring { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes pq-stamp { 0% { transform: scale(0.4); opacity: 0; } 60% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+/* Pulso do selo: anel via box-shadow que cresce (spread 0→14px) e some no fade.
+   Segue o arredondamento da pill, então nunca distorce (padrão clássico ".pulsante").
+   O 1º shadow é o drop fixo (dá relevo); o 2º é o anel que pulsa. */
+@keyframes pq-selo-pulse {
+  from { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 0 0 rgba(224, 184, 76, 0.7); }
+  to   { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 0 14px rgba(224, 184, 76, 0); }
+}
+
+/* =========================================================================
+   COMPONENTES / UTILITÁRIOS DE MARCA
+   ========================================================================= */
+@layer components {
+  /* Containers */
+  .wrap {
+    max-width: var(--container-content);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 28px);
+  }
+  .wrap-narrow {
+    max-width: var(--container-editorial);
+    margin-inline: auto;
+    padding-inline: clamp(20px, 5vw, 28px);
+  }
+  .section {
+    padding-block: clamp(48px, 9vw, 128px);
+  }
+
+  /* Kicker/eyebrow em mono */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--color-steel);
+  }
+  .eyebrow-gold { color: var(--color-gold); }
+
+  /* Texto em gradiente dourado (ênfases, preços, números) */
+  .text-gold-grad {
+    background: linear-gradient(180deg, var(--color-gold-hi), var(--color-amber));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Texto em gradiente vermelho (urgência / última chamada) */
+  .text-danger-grad {
+    background: linear-gradient(180deg, var(--color-danger-hi), var(--color-danger));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Botão primário (CTA dourado) */
+  .btn-gold {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    background: linear-gradient(180deg, #edca6c 0%, #cd9a30 100%);
+    color: #0a0a0a;
+    border-radius: 14px;
+    font-weight: 700;
+    line-height: 1.15;
+    padding: 1rem 2rem;
+    box-shadow: 0 22px 56px -16px rgba(224, 184, 76, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    will-change: transform;
+  }
+  .btn-gold:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.06);
+    box-shadow: 0 28px 66px -14px rgba(224, 184, 76, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+  .btn-gold:active { transform: translateY(-1px); }
+
+  /* Botão outline (secundário) */
+  .btn-outline {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    border: 1px solid rgba(184, 134, 11, 0.55);
+    color: var(--color-gold);
+    border-radius: 14px;
+    font-weight: 600;
+    line-height: 1.15;
+    padding: 1rem 2rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .btn-outline:hover {
+    background: rgba(224, 184, 76, 0.08);
+    border-color: var(--color-gold);
+  }
+}
+
+@layer utilities {
+  /* Grão de filme — overlay fixo (ruído via SVG feTurbulence) */
+  .film-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Divisor dourado fino em gradiente */
+  .rule-gold {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-goldenrod) 50%, transparent);
+  }
+
+  /* Scroll-reveal (componente <Reveal>).
+     Só esconde quando há JS (classe .js no <html>, via script inline no layout).
+     Sem JS — ou se a hidratação falhar — o conteúdo aparece normal, em vez de
+     ficar preso em opacity:0 (era a causa da "tela preta" ao rolar no WebView
+     do Facebook, onde o JS às vezes não roda). */
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .js [data-reveal][data-in] {
+    opacity: 1;
+    transform: none;
+  }
+  /* Rede de segurança: o script inline marca .reveal-fallback quando detecta um
+     elemento visível na tela que continuou escondido (observer não disparou /
+     bundle não executou). Aí tudo reaparece na hora. */
+  .reveal-fallback [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Entrada do hero (anima no load, escalonável via animation-delay inline) */
+  .rise {
+    animation: pq-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  /* Selo "melhor opção" — halo dourado que expande atrás da pill e some no fade.
+     Fica ATRÁS da pill (a pill não escala); repete com uma pausa no final. */
+  .selo-pulse {
+    animation: pq-selo-pulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+  }
+}
+
+/* =========================================================================
+   ACESSIBILIDADE — respeitar prefers-reduced-motion
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =========================================================================
+   MOBILE — alivia compositing pesado no scroll (evita jank em celular)
+   O grão de filme é um overlay fixo com mix-blend-mode: repinta a cada frame.
+   A 0.08 de opacidade é imperceptível no celular, então desliga.
+   ========================================================================= */
+@media (max-width: 640px) {
+  .film-grain { display: none; }
+}
