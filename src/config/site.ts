@@ -64,7 +64,7 @@ export const LOTES: readonly Lote[] = [
     n: 2,
     nome: 'Segundo lote',
     inicio: '2026-07-10T00:00:00-03:00',
-    fim: '2026-07-11T00:00:00-03:00', // vale até 10/07 23:59:59
+    fim: '2026-07-14T00:00:00-03:00', // vale até 13/07 23:59:59
     preco: 1500,
     parcela: 150,
     checkout: msgLote('02'),
@@ -72,8 +72,8 @@ export const LOTES: readonly Lote[] = [
   {
     n: 3,
     nome: 'Terceiro lote',
-    inicio: '2026-07-11T00:00:00-03:00',
-    fim: '2026-07-12T00:00:00-03:00', // vale até 11/07 23:59:59
+    inicio: '2026-07-14T00:00:00-03:00',
+    fim: '2026-07-15T00:00:00-03:00', // vale até 14/07 23:59:59
     preco: 2000,
     parcela: 200,
     checkout: msgLote('03'),
@@ -92,8 +92,9 @@ export const PRECO_GRUPO = 3000;
 /**
  * Modo de teste da virada de lote. Preencha com um ISO pra "congelar" o relógio
  * da página e conferir cada estado sem esperar a meia-noite. Ex.:
- *   '2026-07-10T10:00:00-03:00'  → lote 2 vigente
- *   '2026-07-12T00:00:01-03:00'  → carrinho fechado
+ *   '2026-07-13T10:00:00-03:00'  → lote 2 vigente (último dia)
+ *   '2026-07-14T10:00:00-03:00'  → lote 3 vigente
+ *   '2026-07-15T00:00:01-03:00'  → carrinho fechado
  * Deixe null em produção.
  */
 export const DATA_SIMULADA: string | null = null;
@@ -236,7 +237,7 @@ export const FAQ: { p: string; r: string }[] = [
   },
   {
     p: 'Quando começa a turma?',
-    r: 'Será comunicado no grupo, após o encerramento da oferta na sexta.',
+    r: 'Será comunicado no grupo, após o encerramento da oferta.',
   },
 ];
 
