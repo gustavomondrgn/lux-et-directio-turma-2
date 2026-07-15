@@ -73,7 +73,7 @@ export const LOTES: readonly Lote[] = [
     n: 3,
     nome: 'Terceiro lote',
     inicio: '2026-07-14T00:00:00-03:00',
-    fim: '2026-07-14T12:00:00-03:00', // encerra 14/07 ao meio-dia — depois o carrinho fecha (não há lote mais caro)
+    fim: '2026-07-15T12:00:00-03:00', // encerra 15/07 ao meio-dia — depois o carrinho fecha (não há lote mais caro)
     preco: 2000,
     parcela: 200,
     checkout: msgLote('03'),
@@ -102,8 +102,8 @@ export const PRECO_GRUPO = 3000;
  * Modo de teste da virada de lote. Preencha com um ISO pra "congelar" o relógio
  * da página e conferir cada estado sem esperar a meia-noite. Ex.:
  *   '2026-07-13T10:00:00-03:00'  → lote 2 vigente (último dia)
- *   '2026-07-14T10:00:00-03:00'  → lote 3 vigente (manhã do último dia)
- *   '2026-07-14T12:00:01-03:00'  → carrinho fechado (passou do meio-dia)
+ *   '2026-07-14T10:00:00-03:00'  → lote 3 vigente
+ *   '2026-07-15T12:00:01-03:00'  → carrinho fechado (passou do meio-dia do 15)
  * Deixe null em produção.
  */
 export const DATA_SIMULADA: string | null = null;
