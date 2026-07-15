@@ -3,9 +3,10 @@
 import Emblema from '@/components/fx/Emblema';
 import { cn } from '@/lib/cn';
 import { useRelogio } from '@/hooks/useRelogio';
-import { brl, estadoEm, exibeParcelado, parcelado, ultimoDiaLabel, type StatusLote } from '@/lib/lotes';
+import { brl, estadoEm, exibeParcelado, parcelado, pixParcelado, ultimoDiaLabel, type StatusLote } from '@/lib/lotes';
 import { isLinkReady, LINKS, PARCELAS, PRECO_GRUPO, PRECO_INDIVIDUAL, type Lote } from '@/config/site';
 import CtaButton from './CtaButton';
+import PixIcon from './PixIcon';
 
 /* ------------------------------------------------------------------ CARD -- */
 function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
@@ -58,6 +59,17 @@ function LoteCard({ lote, status }: { lote: Lote; status: StatusLote }) {
             </span>
           </div>
           <p className="mt-3 text-sm text-muted">ou R${brl(lote.preco)} à vista</p>
+
+          {/* Pix parcelado — a novidade da última chamada. Pill discreta, com
+              hairline dourada no mesmo tom da placa, pra puxar o olho sem
+              competir com o preço acima. */}
+          <p className="mt-4 inline-flex items-center gap-2 self-start rounded-full border border-gold/40 bg-[rgba(224,184,76,0.06)] px-3.5 py-1.5 text-[0.8rem] text-clinical">
+            <PixIcon className="h-3.5 w-3.5 shrink-0 text-gold" />
+            <span>
+              Agora também em{' '}
+              <span className="font-medium text-gold-grad">{pixParcelado()}</span>
+            </span>
+          </p>
         </>
       ) : (
         <>
@@ -182,6 +194,12 @@ export function PrecoVigente({ buildNow }: { buildNow: number }) {
         style={{ fontSize: 'min(clamp(26px,3.8vw,38px), 4.4vh)' }}
       >
         {parcelado(vigente) ?? `R$${brl(vigente.preco)}`}
+      </span>
+
+      {/* Pix parcelado — linha menor sob o parcelado do cartão. */}
+      <span className="mt-1 inline-flex items-center gap-1.5 text-[0.72rem] text-muted sm:text-[0.78rem]">
+        <PixIcon className="h-3 w-3 shrink-0 text-gold" />
+        ou {pixParcelado()}
       </span>
     </div>
   );

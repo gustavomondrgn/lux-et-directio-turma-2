@@ -53,7 +53,7 @@ export function CountdownBar({ buildNow }: { buildNow: number }) {
     urg = urgente(t.dias, t.horas);
     const tempo = t.dias >= 1 ? `${t.dias}d ${t.horas}h` : `${t.horas}h ${pad(t.min)}min`;
     texto = urg
-      ? `ÚLTIMA CHAMADA · o ${vigente.nome.toLowerCase()} vira em ${tempo}`
+      ? `ÚLTIMA CHAMADA · as inscrições encerram em ${tempo}`
       : `${vigente.nome} · R$${vigente.preco.toLocaleString('pt-BR')} até ${ultimoDiaLabel(vigente)} · faltam ${tempo}`;
   }
 
@@ -183,7 +183,7 @@ export function CountdownBig({ buildNow, compact = false }: { buildNow: number; 
         <Cell valor={pad(t.seg)} rotulo="seg" urg={urg} compact={compact} />
       </div>
       <p className={'eyebrow text-center text-[0.62rem] sm:text-[0.7rem] ' + (compact ? 'mt-4' : 'mt-6')}>
-        {fase === 'aberto' ? 'para o preço subir' : 'para as inscrições abrirem'}
+        {fase === 'aberto' ? 'para as inscrições encerrarem' : 'para as inscrições abrirem'}
       </p>
     </div>
   );

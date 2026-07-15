@@ -10,7 +10,7 @@
      (não existe servidor em runtime pra recalcular).
    ========================================================================= */
 
-import { DATA_SIMULADA, LOTES, PARCELAS, type Lote } from '@/config/site';
+import { DATA_SIMULADA, LOTES, PARCELAS, PIX_PARCELA, PIX_PARCELAS, type Lote } from '@/config/site';
 
 /** Estado de um lote em relação ao instante consultado. */
 export type StatusLote = 'encerrado' | 'vigente' | 'futuro';
@@ -82,6 +82,14 @@ export function brl(n: number): string {
  */
 export function parcelado(lote: Lote): string | null {
   return lote.parcela == null ? null : `${PARCELAS}x de R$${brl(lote.parcela)}`;
+}
+
+/**
+ * "8x de R$250 no Pix" — a forma de pagamento liberada na última chamada.
+ * Igual ao `parcelado`: o número vem do config, nunca de `preco / 8`.
+ */
+export function pixParcelado(): string {
+  return `${PIX_PARCELAS}x de R$${brl(PIX_PARCELA)} no Pix`;
 }
 
 /* --------------------------------------------------------------------------
